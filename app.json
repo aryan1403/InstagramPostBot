@@ -19,6 +19,16 @@
             "description": "The command handler to invoke commands.",
             "value": "/",
             "required": false
+        },
+        "username": {
+            "description": "Your Instagram Username",
+            "value": "",
+            "required": true
+        },
+        "password": {
+            "description": "Your Instagram Password",
+            "value": "",
+            "required": true
         }
     }
 }
