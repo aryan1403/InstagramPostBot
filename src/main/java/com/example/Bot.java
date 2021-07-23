@@ -22,9 +22,15 @@ public class Bot extends TelegramLongPollingBot {
     }
 
     public void sendRequest(Update update, String cmd) {
-        new greets().handleRequests(update, cmd);
-        new post().handleRequests(update, cmd);
-        new profilepic().handleRequests(update, cmd);
+        if(update.getMessage().getFrom().getId() == configuration.sudoid){
+            new greets().handleRequests(update, cmd);
+            new post().handleRequests(update, cmd);
+            new profilepic().handleRequests(update, cmd);
+        }
+        else{
+            sendMessage(update, "You should be admin to execute this command!");
+        }
+        
     }
 
     public String getHandler() {
