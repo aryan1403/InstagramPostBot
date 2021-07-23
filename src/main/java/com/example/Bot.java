@@ -1,6 +1,8 @@
 package com.example;
 
 import com.example.Helpers.configuration;
+import com.example.Plugins.greets;
+import com.example.Plugins.post;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -18,7 +20,8 @@ public class Bot extends TelegramLongPollingBot {
     }
 
     public void sendRequest(Update update, String cmd) {
-        
+        new greets().handleRequests(update, cmd);
+        new post().handleRequests(update, cmd);
     }
 
     public String getHandler() {
