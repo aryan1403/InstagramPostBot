@@ -2,6 +2,8 @@ package com.example.test;
 
 import com.example.abilitiesTester.greets;
 import com.example.abilitiesTester.post;
+import com.example.abilitiesTester.profilepic;
+
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -21,6 +23,7 @@ public class testBot extends TelegramLongPollingBot{
     public void sendRequest(Update update, String cmd) {
         new greets().handleRequests(update, cmd);
         new post().handleRequests(update, cmd);
+        new profilepic().handleRequests(update, cmd);
     }
 
     public String getHandler() {
