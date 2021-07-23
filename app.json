@@ -29,6 +29,11 @@
             "description": "Your Instagram Password",
             "value": "",
             "required": true
+        },
+        "sudoid": {
+            "description": "Add your telegram ID here",
+            "value": "",
+            "required": true
         }
     }
 }
