@@ -11,7 +11,7 @@ dependency-reduced-pom.xml
 buildNumber.properties
 .mvn/timing.properties
 .env
-src/main/java/com/example/abilitiesTester
+src/main/java/com/example/abilitiesTester/*
 src/main/java/com/example/test
 
 #
