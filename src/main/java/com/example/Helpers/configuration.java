@@ -12,4 +12,5 @@ public class configuration {
     public static String handler = dotenv.get("handler");
     public static String username = dotenv.get("username");
     public static String password = dotenv.get("password");
+    public static long sudoid = Integer.parseInt(dotenv.get("sudoid"));
 }
