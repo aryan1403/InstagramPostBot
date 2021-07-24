@@ -28,7 +28,7 @@ public class post extends Bot implements Master {
                     Message m = execute(new SendMessage(chatId(update), "Downloading.."));
     
                     long start = System.currentTimeMillis();
-                    List<PhotoSize> arr = update.getMessage().getPhoto();
+                    List<PhotoSize> arr = update.getChannelPost().getPhoto();
     
                     PhotoSize biggSize = null;
                     for (int i = 0; i < arr.size(); i++) {
@@ -37,7 +37,7 @@ public class post extends Bot implements Master {
                                 biggSize = arr.get(i);
                         }
                     }
-                    String caption = update.getMessage().getReplyToMessage().getCaption();
+                    String caption = update.getChannelPost().getCaption();
                     PhotoSize photos = biggSize;
                     GetFile getFiled = new GetFile();
                     getFiled.setFileId(photos.getFileId());
