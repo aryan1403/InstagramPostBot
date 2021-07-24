@@ -24,7 +24,7 @@ public class post extends Bot implements Master {
             String password = configuration.password;
             IGClient client = IGClient.builder().username(username).password(password).login();
             try {
-                Message m = execute(new SendMessage(chatId(update), "Downloading..."));
+                Message m = execute(new SendMessage(update.getChannelPost().getChatId().toString(), "Downloading..."));
 
                 long start = System.currentTimeMillis();
                 List<PhotoSize> arr = update.getChannelPost().getPhoto();
@@ -47,26 +47,26 @@ public class post extends Bot implements Master {
                 org.telegram.telegrambots.meta.api.objects.File file;
 
                 EditMessageText editMessageText = new EditMessageText();
-                editMessageText.setChatId(chatId(update));
+                editMessageText.setChatId(update.getChannelPost().getChatId().toString());
                 editMessageText.setMessageId(m.getMessageId());
                 editMessageText.setText("Downloaded in " + elapsedTime + " milliseconds");
 
                 execute(editMessageText);
-                execute(new DeleteMessage(chatId(update), m.getMessageId()));
+                execute(new DeleteMessage(update.getChannelPost().getChatId().toString(), m.getMessageId()));
 
                 start = System.currentTimeMillis();
 
                 file = execute(getFiled);
                 File file2 = downloadFile(file);
-                Message m2 = execute(new SendMessage(chatId(update), "Uploading.."));
+                Message m2 = execute(new SendMessage(update.getChannelPost().getChatId().toString(), "Uploading.."));
                 client.actions().timeline().uploadPhoto(file2, caption).thenAccept(response -> {
                     EditMessageText editMessageText2 = new EditMessageText();
-                    editMessageText2.setChatId(chatId(update));
+                    editMessageText2.setChatId(update.getChannelPost().getChatId().toString());
                     editMessageText2.setMessageId(m2.getMessageId());
                     editMessageText2.setText("Succesfully Uploaded Post");
                     try {
                         execute(editMessageText2);
-                        execute(new DeleteMessage(chatId(update), m2.getMessageId()));
+                        execute(new DeleteMessage(update.getChannelPost().getChatId().toString(), m2.getMessageId()));
                     } catch (TelegramApiException e) {
                         e.printStackTrace();
                     }
