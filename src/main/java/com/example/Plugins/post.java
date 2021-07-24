@@ -19,7 +19,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 public class post extends Bot implements Master {
     @Override
     public void handleRequests(Update update, String cmd) {
-        if (update.getMessage().isChannelMessage() && update.getMessage().hasPhoto()) {
+        if (update.getMessage().hasPhoto()) {
             try {
                 String username = configuration.username;
                 String password = configuration.password;
