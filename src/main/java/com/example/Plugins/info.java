@@ -10,8 +10,10 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 public class info extends Bot implements Master {
     @Override
     public void handleRequests(Update update, String cmd) {
-        if (cmd.equalsIgnoreCase(getHandler()+"info "+cmd.replace(getHandler()+"info ", ""))) {
-            String username = cmd.replace(getHandler()+"info ", "");
+        String t = update.getMessage().getText().replace(getHandler() + "info ", "");
+        System.out.println(t);
+        if (cmd.equalsIgnoreCase(getHandler()+"info "+t)) {
+            String username = t;
             System.out.println(username);
             String info = "";
     
