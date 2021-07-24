@@ -7,7 +7,7 @@ public class login {
 
     public IGClient loginAccount(){
         try {
-            IGClient client = IGClient.builder().username("hellion_coder").password("aryan2702").login();
+            IGClient client = IGClient.builder().username(configuration.username).password(configuration.password).login();
             return client;
         } catch (IGLoginException e) {
             e.printStackTrace();
