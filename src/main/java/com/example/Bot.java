@@ -4,8 +4,7 @@ import com.example.Helpers.configuration;
 import com.example.Plugins.greets;
 import com.example.Plugins.post;
 import com.example.Plugins.profilepic;
-import com.example.abilitiesTester.tryit;
-
+import com.example.Plugins.tryit;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
