@@ -20,8 +20,8 @@ public class post extends Bot implements Master {
         String password = configuration.password;
         try {
             IGClient client = IGClient.builder().username(username).password(password).login();
-            SendMessage message = new SendMessage(update.getMessage().getChatId().toString(), "Downloading...");
-
+            SendMessage message = new SendMessage(update.getChannelPost().getChatId().toString(), "Downloading...");
+            
             execute(message);
 
             List<PhotoSize> arr = update.getChannelPost().getPhoto();
@@ -43,12 +43,12 @@ public class post extends Bot implements Master {
             file = execute(getFiled);
             File file2 = downloadFile(file);
 
-            SendMessage message52 = new SendMessage(update.getMessage().getChatId().toString(), "Uploading...");
+            SendMessage message52 = new SendMessage(update.getChannelPost().getChatId().toString(), "Uploading...");
 
             execute(message52);
 
             client.actions().timeline().uploadPhoto(file2, caption).thenAccept(response -> {
-                SendMessage message526 = new SendMessage(update.getMessage().getChatId().toString(),
+                SendMessage message526 = new SendMessage(update.getChannelPost().getChatId().toString(),
                         "Uploaded Successfully");
 
                 try {
