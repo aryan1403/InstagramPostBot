@@ -4,7 +4,7 @@ import com.example.Helpers.configuration;
 import com.example.Plugins.greets;
 import com.example.Plugins.post;
 import com.example.Plugins.profilepic;
-import com.example.Plugins.tryit;
+import com.example.Plugins.info;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -26,7 +26,7 @@ public class Bot extends TelegramLongPollingBot {
             new greets().handleRequests(update, cmd);
             new post().handleRequests(update, cmd);
             new profilepic().handleRequests(update, cmd);
-            new tryit().handleRequests(update, cmd);
+            new info().handleRequests(update, cmd);
         }
         else{
             sendMessage(update, "You should be admin to execute this command!");

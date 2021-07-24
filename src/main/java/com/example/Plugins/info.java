@@ -1,19 +1,17 @@
 package com.example.Plugins;
-import java.util.concurrent.ExecutionException;
 
+import java.util.concurrent.ExecutionException;
 import com.example.Bot;
 import com.example.Master;
 import com.example.Helpers.login;
 import com.github.instagram4j.instagram4j.IGClient;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-public class greets extends Bot implements Master {
-
+public class info extends Bot implements Master {
     @Override
     public void handleRequests(Update update, String cmd) {
-        if(cmd.equalsIgnoreCase(getHandler()+"start")){
-            sendMessage(update, "Welcome "+update.getMessage().getFrom().getFirstName()+ " to Instagram Post Bot.");
-            String username = "aaryan14032006";
+        if (cmd.equalsIgnoreCase(getHandler()+"info "+cmd.replace(getHandler()+"info ", ""))) {
+            String username = cmd.replace(getHandler()+"info ", "");
             System.out.println(username);
             String info = "";
     
@@ -40,6 +38,8 @@ public class greets extends Bot implements Master {
                 sendMessage(update, "Invalid Username");
                 e.printStackTrace();
             }
+            
         }
     }
+
 }
