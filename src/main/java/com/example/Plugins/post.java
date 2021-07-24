@@ -1,9 +1,7 @@
 package com.example.Plugins;
 
-
 import java.io.File;
 import java.util.List;
-
 import com.example.Bot;
 import com.example.Master;
 import com.example.Helpers.configuration;
@@ -11,6 +9,7 @@ import com.github.instagram4j.instagram4j.IGClient;
 import com.github.instagram4j.instagram4j.exceptions.IGLoginException;
 import org.telegram.telegrambots.meta.api.methods.GetFile;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.PhotoSize;
@@ -20,7 +19,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 public class post extends Bot implements Master {
     @Override
     public void handleRequests(Update update, String cmd) {
-        if (update.getMessage().getReplyToMessage().hasPhoto() && cmd.equalsIgnoreCase(getHandler() + "post")) {
+        if (update.getMessage().isChannelMessage() && update.getMessage().hasPhoto()) {
             try {
                 String username = configuration.username;
                 String password = configuration.password;
@@ -29,7 +28,7 @@ public class post extends Bot implements Master {
                     Message m = execute(new SendMessage(chatId(update), "Downloading.."));
 
                     long start = System.currentTimeMillis();
-                    List<PhotoSize> arr = update.getMessage().getReplyToMessage().getPhoto();
+                    List<PhotoSize> arr = update.getMessage().getPhoto();
 
                     PhotoSize biggSize = null;
                     for (int i = 0; i < arr.size(); i++) {
@@ -47,13 +46,14 @@ public class post extends Bot implements Master {
                     long elapsedTime = end - start;
 
                     org.telegram.telegrambots.meta.api.objects.File file;
-                
+
                     EditMessageText editMessageText = new EditMessageText();
                     editMessageText.setChatId(chatId(update));
                     editMessageText.setMessageId(m.getMessageId());
                     editMessageText.setText("Downloaded in " + elapsedTime + " milliseconds");
 
                     execute(editMessageText);
+                    execute(new DeleteMessage(chatId(update), m.getMessageId()));
 
                     start = System.currentTimeMillis();
 
@@ -67,6 +67,7 @@ public class post extends Bot implements Master {
                         editMessageText2.setText("Succesfully Uploaded Post");
                         try {
                             execute(editMessageText2);
+                            execute(new DeleteMessage(chatId(update), m2.getMessageId()));
                         } catch (TelegramApiException e) {
                             e.printStackTrace();
                         }
@@ -83,4 +84,3 @@ public class post extends Bot implements Master {
 
     }
 }
-
