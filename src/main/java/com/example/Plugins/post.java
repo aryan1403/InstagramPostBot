@@ -17,32 +17,34 @@ public class post extends Bot implements Master {
     public void handleRequests(Update update, String cmd) {
         String username = configuration.username;
         String password = configuration.password;
-        try {
-            IGClient client = IGClient.builder().username(username).password(password).login();
-            List<PhotoSize> arr = update.getChannelPost().getPhoto();
+        if (update.getChannelPost().hasPhoto()) {
+            try {
+                IGClient client = IGClient.builder().username(username).password(password).login();
+                List<PhotoSize> arr = update.getChannelPost().getPhoto();
 
-            PhotoSize biggSize = null;
-            for (int i = 0; i < arr.size(); i++) {
-                for (int j = 0; j < arr.size(); j++) {
-                    if (arr.get(i).getFileSize() > arr.get(j).getFileSize())
-                        biggSize = arr.get(i);
+                PhotoSize biggSize = null;
+                for (int i = 0; i < arr.size(); i++) {
+                    for (int j = 0; j < arr.size(); j++) {
+                        if (arr.get(i).getFileSize() > arr.get(j).getFileSize())
+                            biggSize = arr.get(i);
+                    }
                 }
+                String caption = update.getChannelPost().getCaption();
+                PhotoSize photos = biggSize;
+                GetFile getFiled = new GetFile();
+                getFiled.setFileId(photos.getFileId());
+
+                org.telegram.telegrambots.meta.api.objects.File file;
+
+                file = execute(getFiled);
+                File file2 = downloadFile(file);
+                client.actions().timeline().uploadPhoto(file2, caption).thenAccept(response -> {
+                    System.out.println("Successfullt uploaded");
+                }).join();
+
+            } catch (IGLoginException | TelegramApiException e) {
+                e.printStackTrace();
             }
-            String caption = update.getChannelPost().getCaption();
-            PhotoSize photos = biggSize;
-            GetFile getFiled = new GetFile();
-            getFiled.setFileId(photos.getFileId());
-
-            org.telegram.telegrambots.meta.api.objects.File file;
-
-            file = execute(getFiled);
-            File file2 = downloadFile(file);
-            client.actions().timeline().uploadPhoto(file2, caption).thenAccept(response -> {
-                System.out.println("Successfullt uploaded");
-            }).join();
-
-        } catch (IGLoginException | TelegramApiException e) {
-            e.printStackTrace();
         }
 
     }
