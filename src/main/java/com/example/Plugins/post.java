@@ -8,7 +8,6 @@ import com.example.Helpers.configuration;
 import com.github.instagram4j.instagram4j.IGClient;
 import com.github.instagram4j.instagram4j.exceptions.IGLoginException;
 import org.telegram.telegrambots.meta.api.methods.GetFile;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -19,12 +18,18 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 public class post extends Bot implements Master {
     @Override
     public void handleRequests(Update update, String cmd) {
+        if(update.hasChannelPost()){
         try {
             String username = configuration.username;
             String password = configuration.password;
             IGClient client = IGClient.builder().username(username).password(password).login();
             try {
-                Message m = execute(new SendMessage(chatId(update), "Downloading.."));
+                String caption = update.getChannelPost().getCaption();
+                Message m = new Message();
+                m.setText("Downloading..");
+                m.setChat(update.getChannelPost().getChat());
+                
+                update.setChannelPost(m);
 
                 long start = System.currentTimeMillis();
                 List<PhotoSize> arr = update.getChannelPost().getPhoto();
@@ -36,7 +41,6 @@ public class post extends Bot implements Master {
                             biggSize = arr.get(i);
                     }
                 }
-                String caption = update.getChannelPost().getCaption();
                 PhotoSize photos = biggSize;
                 GetFile getFiled = new GetFile();
                 getFiled.setFileId(photos.getFileId());
@@ -52,13 +56,18 @@ public class post extends Bot implements Master {
                 editMessageText.setText("Downloaded in " + elapsedTime + " milliseconds");
 
                 execute(editMessageText);
-                execute(new DeleteMessage(chatId(update), m.getMessageId()));
 
                 start = System.currentTimeMillis();
 
                 file = execute(getFiled);
                 File file2 = downloadFile(file);
-                Message m2 = execute(new SendMessage(chatId(update), "Uploading.."));
+
+                Message m2 = new Message();
+                m2.setText("Downloading..");
+                m2.setChat(update.getChannelPost().getChat());
+
+                update.setChannelPost(m2);
+
                 client.actions().timeline().uploadPhoto(file2, caption).thenAccept(response -> {
                     EditMessageText editMessageText2 = new EditMessageText();
                     editMessageText2.setChatId(chatId(update));
@@ -66,6 +75,7 @@ public class post extends Bot implements Master {
                     editMessageText2.setText("Succesfully Uploaded Post");
                     try {
                         execute(editMessageText2);
+                        execute(new DeleteMessage(chatId(update), m.getMessageId()));
                         execute(new DeleteMessage(chatId(update), m2.getMessageId()));
                     } catch (TelegramApiException e) {
                         e.printStackTrace();
@@ -79,6 +89,7 @@ public class post extends Bot implements Master {
             sendMessage(update, "Incorrect Username/password");
             e.printStackTrace();
         }
+    }
 
     }
 }
